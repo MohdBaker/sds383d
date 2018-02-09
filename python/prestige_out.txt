@@ -1,0 +1,37 @@
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                      y   R-squared:                       0.798
+Model:                            OLS   Adj. R-squared:                  0.792
+Method:                 Least Squares   F-statistic:                     129.2
+Date:                Wed, 07 Feb 2018   Prob (F-statistic):           6.26e-34
+Time:                        16:47:15   Log-Likelihood:                -352.82
+No. Observations:                 102   AIC:                             713.6
+Df Residuals:                      98   BIC:                             724.1
+Df Model:                           3                                         
+Covariance Type:            nonrobust                                         
+==============================================================================
+                 coef    std err          t      P>|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+const         -6.7943      3.239     -2.098      0.039     -13.222      -0.366
+x1             4.1866      0.389     10.771      0.000       3.415       4.958
+x2             0.0013      0.000      4.729      0.000       0.001       0.002
+x3            -0.0089      0.030     -0.293      0.770      -0.069       0.051
+==============================================================================
+Omnibus:                        0.271   Durbin-Watson:                   1.687
+Prob(Omnibus):                  0.873   Jarque-Bera (JB):                0.436
+Skew:                          -0.085   Prob(JB):                        0.804
+Kurtosis:                       2.729   Cond. No.                     3.35e+04
+==============================================================================
+
+Warnings:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The condition number is large, 3.35e+04. This might indicate that there are
+strong multicollinearity or other numerical problems.
+
+
+********Computed Standard Error Values**************
+
+[3.23908865e+00 3.88701261e-01 2.77781198e-04 3.04070576e-02]
+
+********Computed Standard Error Values**************
+
