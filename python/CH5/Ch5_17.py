@@ -20,7 +20,7 @@ X=pca.transform(Xp)
 #set the params
 n=X.shape[0]		# number of samples 
 d=X.shape[1]		# number of covariates 
-K=10
+K=100
 
 
 #
@@ -33,13 +33,17 @@ nu0=1
 L0=np.eye(d)
 
 
-alpha=np.ones((K,1))
+alpha=0.01*np.ones((K,1))
 
 
 def sample_mean(X,mu0,n):
 	d=X.shape[1]
-	sigma=np.linalg.inv((n+1)*np.eye(d))	
-	mu_n=np.dot(sigma, ((np.dot(np.eye(d),mu0.squeeze()))+n*np.dot(np.eye(d),np.mean(X,axis=0)) ))
+	if n==0:
+		mu_n=mu0.squeeze()
+		sigma=np.eye(d)
+	else:
+		sigma=np.linalg.inv((n+1)*np.eye(d))	
+		mu_n=np.dot(sigma, ((np.dot(np.eye(d),mu0.squeeze()))+n*np.dot(np.eye(d),np.mean(X,axis=0)) ))
 	mu=np.random.multivariate_normal(mu_n,sigma).T
 	return mu.squeeze()
 
@@ -59,7 +63,7 @@ def sample_z(X,mu,alpha,K, n):
 	return z.squeeze() 
 
 
-z0=np.random.randint(0,high=10,size=n)
+z0=np.random.randint(0,high=100,size=n)
 #for i in range(n):
 #	z0[i]=int(i/100)
 
@@ -71,7 +75,7 @@ def sampler(X,mu0,z0,alpha,n,K,n_samples=1000):
 		for k in range(K):
 			ind=np.where(z[:,i-1]==k)
 			x=X[ind[0],:]
-			print('number is %.6f' %(ind[0].shape) )
+			#print('number is %.6f' %(ind[0].shape) )
 			m[:,k,i]=sample_mean(x,mu0,x.shape[0])
 		z[:,i]=sample_z(X,m[:,:,i],alpha,K, n)
 		print('Iteration %.6f '% (i))
@@ -79,32 +83,30 @@ def sampler(X,mu0,z0,alpha,n,K,n_samples=1000):
 
 
 m,z=sampler(X,mu0,z0,alpha,n,K,n_samples=3000)
-MM=np.mean(m[:,:,2000:], axis=2)
+MM=np.mean(m[:,:,1000:], axis=2)
+ZZ=np.mean(z[:,1000:], axis=1)
+ZZ=np.around(ZZ)
 M=pca.inverse_transform(MM.T)
+n_z=np.zeros((K,))
+for k in range(K):
+	ind=np.where(ZZ==k)
+	n_z[k]=ind[0].shape[0]
 
-fig, ax =plt.subplots(nrows=2, ncols=5)
+labels=map(str,n_z)
+
+fig, ax =plt.subplots(nrows=10, ncols=10)
 c=0
-for i in range(2):
-	for j in range(5):
+for i in range(10):
+	for j in range(10):
 		ax[i, j].imshow(M[c,:].reshape(28,28))
+		ax[i, j].set_title(labels[c] color='r')
 		c+=1
+
+plt.setp(plt.title, color='r')    
 
 plt.show()
 
 
-
-
-### final results:
-#number is 128.000000
-#number is 75.000000
-#number is 89.000000
-#number is 40.000000
-#number is 31.000000
-#number is 147.000000
-#number is 75.000000
-#number is 85.000000
-#number is 110.000000
-#number is 220.000000
 
 
 
